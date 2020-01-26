@@ -21,7 +21,7 @@ lightgrey = (100, 100, 100)
 
 
 # game options
-width, height = 800, 600  # (640x480 or 800x600 or 1024x768 or 1280x1024)
+width, height = 800, 600
 fps = 120  # fps limit
 title = 'Food Wars'
 time_limit = 60  # game time limit in seconds
@@ -44,6 +44,8 @@ game_folder = os.path.dirname(__file__)
 image_folder = os.path.join(game_folder, 'images')
 food_folder = os.path.join(image_folder, 'food')
 map_folder = os.path.join(game_folder, 'maps')
+font_folder = os.path.join(game_folder, 'fonts')
+map = 'tdss.txt'
 
 # images
 player1_image = 'hitman1_hold.png'
@@ -61,4 +63,4 @@ food_spawn_timer = 0.1  # seconds between food spawn
 
 # text settings
 default_font = 'Segoe UI.ttf'
-default_font_bold = 'Segoe UI Bold.ttf'
+default_font_bold = 'Segoe_UI_Bold.ttf'

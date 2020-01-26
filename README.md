@@ -23,10 +23,10 @@ The aim of the game is run around the school collecting food, after the timer en
 - Pygame 1.9.6 or above
 
 ### To-Do's
-- Minimap
-- Students that walk around and reduce your score if you bump into them
-- CPU Mode
-- Better Menus
-- Sounds
-- First Floor of the Minimap
-- Pyinstaller Compatibility
+- [] Minimap
+- [] Students that walk around and reduce your score if you bump into them
+- [] CPU Mode
+- [] Better Menus
+- [] Sounds
+- [] First floor of the map
+- [x] Pyinstaller Compatibility
