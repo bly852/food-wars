@@ -160,11 +160,11 @@ class Player(pygame.sprite.Sprite):
                 # different joystick settings for Xbox controllers
                 if joystick.get_name() == 'Xbox Wireless Controller' or 'Controller (Xbox One For Windows)':
                 # checks for axis movement and changes velX and velY
-                    if round(joystick.get_axis(4)) != 0 or round(joystick.get_axis(3)) != 0:
-                        self.velX += joystick.get_axis(4) * player_speed
+                    if round(joystick.get_axis(2)) != 0 or round(joystick.get_axis(3)) != 0:
+                        self.velX += joystick.get_axis(2) * player_speed
                         self.velY += joystick.get_axis(3) * player_speed
                 else:
-                    if round(joystick.get_axis(1)) != 0 or round(joystick.get_axis(0)) != 0:
+                    if round(joystick.get_axis(2)) != 0 or round(joystick.get_axis(3)) != 0:
                         self.velX += joystick.get_axis(2) * player_speed
                         self.velY -= joystick.get_axis(3) * player_speed
 

@@ -129,15 +129,19 @@ class Game:
             Food(self, random.randint(0, self.map.tileWidth),
                  random.randint(0, self.map.tileHeight))
 
-        # generates player sprites
-        for row, tiles in enumerate(self.map.data):
-            for col, tile in enumerate(tiles):
-                if tile == "1":
-                    Floor(self, col, row)
-                    self.player1 = Player(self, col, row, 1)
-                elif tile == "2":
-                    Floor(self, col, row)
-                    self.player2 = Player(self, col, row, 2)
+        # spawns players at a random spot on the map
+        while len(self.players) < 2:
+            for row, tiles in enumerate(self.map.data):
+                 for col, tile in enumerate(tiles):
+                     if tile == '.':
+                         if len(self.players) == 2:
+                             break
+                         elif len(self.players) < 1:
+                             if random.randint(spawn_chance, 10000) == 1:
+                                 self.player1 = Player(self, col, row, 1)
+                         else:
+                             if random.randint(spawn_chance, 10000) == 2:
+                                 self.player2 = Player(self, col, row, 2)
 
     def run(self):
         """

@@ -36,6 +36,7 @@ gridHeight = height / tileSize
 
 # player settings
 player_speed = 500
+spawn_chance = 1 # percentage chance of player spawn on a tile sprite
 
 
 # folders | loads the paths to the game folders
