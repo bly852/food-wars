@@ -21,7 +21,7 @@ lightgrey = (100, 100, 100)
 
 
 # game options
-width, height = 800, 600
+width, height = 1280, 720
 fps = 120  # fps limit
 title = 'Food Wars'
 time_limit = 60  # game time limit in seconds

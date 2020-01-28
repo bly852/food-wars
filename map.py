@@ -38,12 +38,14 @@ class Camera:
     class to contain the games camera
     """
 
-    def __init__(self, cam_width, cam_height, camNum):
+    def __init__(self, cam_width, cam_height, camNum, screen_width, screen_height):
         """
         initializes a camera based on the cam_width
         and cam_height parameters
         """
         self.camera = pygame.Rect(0, 0, width/2, height)
+        self.screen_width = screen_width
+        self.screen_height = screen_height
         self.width = cam_width
         self.height = cam_height
 
@@ -57,12 +59,12 @@ class Camera:
         """
         updates the camera based on the target parameter's movement
         """
-        x = -target.rect.x + int(width / 4)
-        y = -target.rect.y + int(height / 2)
+        x = -target.rect.x + int(self.screen_width / 4)
+        y = -target.rect.y + int(self.screen_height / 2)
 
         # camera limits
         x = min(0, x)
         y = min(0, y)
-        x = max(-(self.width - width/2), x)
-        y = max(-(self.height - height), y)
+        x = max(-(self.width - self.screen_width/2), x)
+        y = max(-(self.height - self.screen_height), y)
         self.camera = pygame.Rect(x, y, self.width, self.height)

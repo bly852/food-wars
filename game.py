@@ -30,7 +30,9 @@ class Game:
         """
         # initalizes pygame window and name
         pygame.init()
-        self.screen = pygame.display.set_mode((width, height))
+        self.screen_width = width
+        self.screen_height = height
+        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         pygame.display.set_caption("{}".format(title))
 
         # joystick initialization
@@ -38,9 +40,9 @@ class Game:
         # returns the count of joysticks plugged in
 
         # initialize player cameras
-        self.canvas = pygame.Surface((width, height))
-        self.player1_rect = pygame.Rect(0, 0, width / 2, height)
-        self.player2_rect = pygame.Rect(width / 2, 0, width / 2, height)
+        self.canvas = pygame.Surface((self.screen_width, self.screen_height))
+        self.player1_rect = pygame.Rect(0, 0, self.screen_width / 2, self.screen_height)
+        self.player2_rect = pygame.Rect(self.screen_width / 2, 0, self.screen_width / 2, self.screen_height)
         self.player1_cam = self.canvas.subsurface(self.player1_rect)
         self.player2_cam = self.canvas.subsurface(self.player2_rect)
 
@@ -114,8 +116,8 @@ class Game:
         self.food = pygame.sprite.Group()
 
         # initializes the camera for the player
-        self.camera1 = Camera(self.map.width, self.map.height, 1)
-        self.camera2 = Camera(self.map.width, self.map.height, 2)
+        self.camera1 = Camera(self.map.width, self.map.height, 1, self.screen_width, self.screen_height)
+        self.camera2 = Camera(self.map.width, self.map.height, 2, self.screen_width, self.screen_height)
 
         # generates walls and floors
         for row, tiles in enumerate(self.map.data):
@@ -193,25 +195,25 @@ class Game:
 
         # blits both players views onto the main screen
         self.screen.blit(self.player1_cam, (0, 0))
-        self.screen.blit(self.player2_cam, (width / 2, 0))
+        self.screen.blit(self.player2_cam, (self.screen_width / 2, 0))
 
         # draws the screen border
         pygame.draw.rect(self.screen, gui_accent_colour,
-                         (0, 0, width, height), 3)
+                         (0, 0, self.screen_width, self.screen_height), 3)
 
         # draws the GUI base layer
         pygame.draw.line(self.screen, gui_accent_colour,
-                         (width / 2, 0), (width / 2, height), 14)
-        pygame.draw.rect(self.screen, gui_accent_colour, ((width / 4) - (width / 12) - 2, 0, width - (width / 4) - (width / 12) + 4, 37))
-        pygame.draw.line(self.screen, black, (width / 2, 2), (width / 2, height), 10)
-        pygame.draw.rect(self.screen, black, ((width / 4) - (width / 12), 2, width - (width / 4) - (width / 12), 33))
+                         (self.screen_width / 2, 0), (self.screen_width / 2, self.screen_height), 14)
+        pygame.draw.rect(self.screen, gui_accent_colour, ((self.screen_width / 4) - (self.screen_width / 12) - 2, 0, self.screen_width - (self.screen_width / 4) - (self.screen_width / 12) + 4, 37))
+        pygame.draw.line(self.screen, black, (self.screen_width / 2, 2), (self.screen_width / 2, self.screen_height), 10)
+        pygame.draw.rect(self.screen, black, ((self.screen_width / 4) - (self.screen_width / 12), 2, self.screen_width - (self.screen_width / 4) - (self.screen_width / 12), 33))
 
         # draws time left to the screen
-        self.draw_text('{} seconds left'.format(time_limit - (int(self.elapsed_time))), self.default_font_bold, 25, white, width / 2, 17, align='center')
+        self.draw_text('{} seconds left'.format(time_limit - (int(self.elapsed_time))), self.default_font_bold, 25, white, self.screen_width / 2, 17, align='center')
 
         # draws player score to the screen
-        self.draw_text('Score: {}'.format(self.player1.score), self.default_font_bold, 25, white, width / 4, 17, align='center')
-        self.draw_text('Score: {}'.format(self.player2.score), self.default_font_bold, 25, white, width - (width / 4), 17, align='center')
+        self.draw_text('Score: {}'.format(self.player1.score), self.default_font_bold, 25, white, self.screen_width / 4, 17, align='center')
+        self.draw_text('Score: {}'.format(self.player2.score), self.default_font_bold, 25, white, self.screen_width - (self.screen_width / 4), 17, align='center')
 
         # flip render to the screen
         pygame.display.flip()
@@ -251,11 +253,11 @@ class Game:
         self.screen.fill(black)
 
         # draws splash screen text
-        self.draw_text('FOOD WARS', self.default_font_bold, 100, white, width // 2, height // 2 - 100, align='center')
-        self.draw_text('WASD to move Mr. Pileggi (Player 1)', self.default_font_bold, 25, white, width // 2, height // 2 + 25, align='center')
-        self.draw_text('Arrow Keys to move Mr. Chun (Player 2)', self.default_font_bold, 25, white, width // 2, height // 2 + 50, align='center')
-        self.draw_text('Pickup food to get points', self.default_font_bold, 25, white, width // 2, height // 2 + 100, align='center')
-        self.draw_text('Press any key to start', self.default_font_bold, 50, white, width // 2, height // 2 + 175, align='center')
+        self.draw_text('FOOD WARS', self.default_font_bold, 100, white, self.screen_width // 2, self.screen_height // 2 - 100, align='center')
+        self.draw_text('WASD to move Mr. Pileggi (Player 1)', self.default_font_bold, 25, white, self.screen_width // 2, self.screen_height // 2 + 25, align='center')
+        self.draw_text('Arrow Keys to move Mr. Chun (Player 2)', self.default_font_bold, 25, white, self.screen_width // 2, self.screen_height // 2 + 50, align='center')
+        self.draw_text('Pickup food to get points', self.default_font_bold, 25, white, self.screen_width // 2, self.screen_height // 2 + 100, align='center')
+        self.draw_text('Press any key to start', self.default_font_bold, 50, white, self.screen_width // 2, self.screen_height // 2 + 175, align='center')
 
         self.splashscreen = True
 
@@ -274,15 +276,15 @@ class Game:
         self.screen.blit(self.game_over, (0, 0))
 
         # draws the game over screen text
-        self.draw_text('GAME OVER', self.default_font_bold, 100, white, width // 2, height // 2 - 100, align='center')
+        self.draw_text('GAME OVER', self.default_font_bold, 100, white, self.screen_width // 2, self.screen_height // 2 - 100, align='center')
         if self.player1.score > self.player2.score:
-            self.draw_text('Player 1 Wins!', self.default_font_bold, 50, white, width // 2, height // 2 + 75, align='center')
+            self.draw_text('Player 1 Wins!', self.default_font_bold, 50, white, self.screen_width // 2, self.screen_height // 2 + 75, align='center')
         elif self.player1.score < self.player2.score:
-            self.draw_text('Player 2 Wins!', self.default_font_bold, 50, white, width // 2, height // 2 + 75, align='center')
+            self.draw_text('Player 2 Wins!', self.default_font_bold, 50, white, self.screen_width // 2, self.screen_height // 2 + 75, align='center')
         else:
-            self.draw_text('It was a tie!', self.default_font_bold, 50, white, width // 2, height // 2 + 75, align='center')
-        self.draw_text('Press Escape to quit the game', self.default_font_bold, 25, white, width // 2, height // 2 + 150, align='center')
-        self.draw_text('Press any other key to play again', self.default_font_bold, 25, white, width // 2, height // 2 + 175, align='center')
+            self.draw_text('It was a tie!', self.default_font_bold, 50, white, self.screen_width // 2, self.screen_height // 2 + 75, align='center')
+        self.draw_text('Press Escape to quit the game', self.default_font_bold, 25, white, self.screen_width // 2, self.screen_height // 2 + 150, align='center')
+        self.draw_text('Press any other key to play again', self.default_font_bold, 25, white, self.screen_width // 2, self.screen_height // 2 + 175, align='center')
 
         pygame.display.flip() # flips final screen to the display
         self.wait_for_key() # runs the loop
@@ -309,6 +311,16 @@ class Game:
                         else:
                             if event.key == K_ESCAPE:
                                 self.quit()
+                            elif event.key == K_r:
+                                if self.screen_width == 1280 and self.screen_height == 720:
+                                    self.screen_width = 800
+                                    self.screen_height = 600
+                                    self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
+                                elif self.screen_width == 800 and self.screen_height == 600:
+                                    self.screen_width = 1280
+                                    self.screen_height = 720
+                                    self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
+                                self.show_game_over()
                             else:
                                 waiting = False
 
