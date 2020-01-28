@@ -23,7 +23,6 @@ class Game:
     """
     Game class that contains the entire game
     """
-
     def __init__(self):
         """
         initialize pygame window when an instance is created
@@ -103,10 +102,6 @@ class Game:
         """
         initializes a new game resetting cameras and sprite groups
         """
-
-        # tells the game it is no longer at the spash screen
-        self.splashscreen = False
-
         # sprite groups to organize all sprites
         self.all_sprites = pygame.sprite.Group()
         self.players = pygame.sprite.Group()
@@ -150,6 +145,7 @@ class Game:
         """
         main game loop
         """
+        self.splashscreen = False # Tells the game it is no longer at splash screen
         self.playing = True
         self.elapsed_time = 0
         self.foodTimer = 0
@@ -158,6 +154,7 @@ class Game:
             self.events()
             self.update()
             self.draw()
+            pygame.display.flip()
 
     def quit(self):
         """
@@ -215,9 +212,6 @@ class Game:
         self.draw_text('Score: {}'.format(self.player1.score), self.default_font_bold, 25, white, self.screen_width / 4, 17, align='center')
         self.draw_text('Score: {}'.format(self.player2.score), self.default_font_bold, 25, white, self.screen_width - (self.screen_width / 4), 17, align='center')
 
-        # flip render to the screen
-        pygame.display.flip()
-
     def events(self):
         """
         part of the game loop - checks for events
@@ -249,15 +243,28 @@ class Game:
         """
         shows the games start screen
         """
-        # sets the screen as black
-        self.screen.fill(black)
+        # creates a new game instance and fills the background with it
+        self.new()
+        self.camera1.update(self.player1)
+        self.camera2.update(self.player2)
+        self.player1_cam.fill(lightgrey)
+        self.player2_cam.fill(lightgrey)
+        for sprite in self.all_sprites:
+            self.player1_cam.blit(sprite.image, self.camera1.apply(sprite))
+        for sprite in self.all_sprites:
+            self.player2_cam.blit(sprite.image, self.camera2.apply(sprite))
+        self.screen.blit(self.player1_cam, (0, 0))
+        self.screen.blit(self.player2_cam, (self.screen_width / 2, 0))
+        pygame.draw.line(self.screen, gui_accent_colour, (self.screen_width / 2, 0), (self.screen_width / 2, self.screen_height), 14)
+        pygame.draw.rect(self.screen, gui_accent_colour, ((self.screen_width / 4) - (self.screen_width / 12) - 2, 0, self.screen_width - (self.screen_width / 4) - (self.screen_width / 12) + 4, 37))
+        pygame.draw.line(self.screen, black, (self.screen_width / 2, 2), (self.screen_width / 2, self.screen_height), 10)
+        pygame.draw.rect(self.screen, black, ((self.screen_width / 4) - (self.screen_width / 12), 2, self.screen_width - (self.screen_width / 4) - (self.screen_width / 12), 33))
 
-        # draws splash screen text
-        self.draw_text('FOOD WARS', self.default_font_bold, 100, white, self.screen_width // 2, self.screen_height // 2 - 100, align='center')
-        self.draw_text('WASD to move Mr. Pileggi (Player 1)', self.default_font_bold, 25, white, self.screen_width // 2, self.screen_height // 2 + 25, align='center')
-        self.draw_text('Arrow Keys to move Mr. Chun (Player 2)', self.default_font_bold, 25, white, self.screen_width // 2, self.screen_height // 2 + 50, align='center')
-        self.draw_text('Pickup food to get points', self.default_font_bold, 25, white, self.screen_width // 2, self.screen_height // 2 + 100, align='center')
-        self.draw_text('Press any key to start', self.default_font_bold, 50, white, self.screen_width // 2, self.screen_height // 2 + 175, align='center')
+        # covers the screen in a transparent grey layer
+        self.screen.blit(self.game_over, (0, 0))
+
+
+        # draws splash screen buttons
 
         self.splashscreen = True
 
@@ -324,10 +331,66 @@ class Game:
                             else:
                                 waiting = False
 
+    def countdown(self):
+        start_time = time.time()
+        counting = True
+        if not self.splashscreen:
+            self.update()
+        while counting:
+            if self.splashscreen == True:
+                self.camera1.update(self.player1)
+                self.camera2.update(self.player2)
+                self.player1_cam.fill(lightgrey)
+                self.player2_cam.fill(lightgrey)
+                for sprite in self.all_sprites:
+                    self.player1_cam.blit(sprite.image, self.camera1.apply(sprite))
+                for sprite in self.all_sprites:
+                    self.player2_cam.blit(sprite.image, self.camera2.apply(sprite))
+                self.screen.blit(self.player1_cam, (0, 0))
+                self.screen.blit(self.player2_cam, (self.screen_width / 2, 0))
+                pygame.draw.line(self.screen, gui_accent_colour, (self.screen_width / 2, 0), (self.screen_width / 2, self.screen_height), 14)
+                pygame.draw.rect(self.screen, gui_accent_colour, ((self.screen_width / 4) - (self.screen_width / 12) - 2, 0, self.screen_width - (self.screen_width / 4) - (self.screen_width / 12) + 4, 37))
+                pygame.draw.line(self.screen, black, (self.screen_width / 2, 2), (self.screen_width / 2, self.screen_height), 10)
+                pygame.draw.rect(self.screen, black, ((self.screen_width / 4) - (self.screen_width / 12), 2, self.screen_width - (self.screen_width / 4) - (self.screen_width / 12), 33))
+                self.draw_text('{} seconds left'.format(time_limit), self.default_font_bold, 25, white, self.screen_width / 2, 17, align='center')
+                self.draw_text('Score: {}'.format(self.player1.score), self.default_font_bold, 25, white, self.screen_width / 4, 17, align='center')
+                self.draw_text('Score: {}'.format(self.player2.score), self.default_font_bold, 25, white, self.screen_width - (self.screen_width / 4), 17, align='center')
+            else:
+                self.draw()
+
+            self.screen.blit(self.game_over, (0, 0))
+
+            if time.time() - start_time <= 1:
+                # player 1 countdown
+                self.draw_text('3', self.default_font_bold, 250, white, self.screen_width/4, self.screen_height/2, align='center')
+
+                # player 2 countdown
+                self.draw_text('3', self.default_font_bold, 250, white, self.screen_width-(self.screen_width/4), self.screen_height/2, align='center')
+
+            elif time.time() - start_time <=2:
+                # player 1 countdown
+                self.draw_text('2', self.default_font_bold, 250, white, self.screen_width/4, self.screen_height/2, align='center')
+
+                # player 2 countdown
+                self.draw_text('2', self.default_font_bold, 250, white, self.screen_width-(self.screen_width/4), self.screen_height/2, align='center')
+
+            elif time.time() - start_time <=3:
+                # player 1 countdown
+                self.draw_text('1', self.default_font_bold, 250, white, self.screen_width/4, self.screen_height/2, align='center')
+
+                # player 2 countdown
+                self.draw_text('1', self.default_font_bold, 250, white, self.screen_width-(self.screen_width/4), self.screen_height/2, align='center')
+
+            elif time.time() - start_time >=3:
+                counting = False
+            self.fpsClock.tick(fps)
+            pygame.display.flip()
+
 
 game = Game() # creates an instance of the game
 game.show_start_screen() # runs the start screen with instructions
 while True:
     game.new() # generates a new level
+    game.countdown() # runs countdown timer before game starts
     game.run() # runs the game loop
     game.show_game_over() # show the game over screen with option to play again
