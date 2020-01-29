@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - README update
 - Countdown timer before the game starts
 
+### Fixed
+- Xbox controller connected via the USB Dongle didn't work properly in single controller mode
+
+
 ## [0.1.0] - 2020-01-28
 ### Added
 - Working prototype of the game
