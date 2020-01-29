@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Xbox controller connected via the USB Dongle didn't work properly in single controller mode
-
+- MacOS.App plist Versioning
 
 ## [0.1.0] - 2020-01-28
 ### Added
