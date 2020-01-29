@@ -39,6 +39,6 @@ exe = EXE(pyz,
           console=False )
 
   app = BUNDLE(exe,
-                name='game',
+                name='game.app',
                 icon=None,
                 bundle_identifier=None)
