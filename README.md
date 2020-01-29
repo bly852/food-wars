@@ -12,21 +12,37 @@ The aim of the game is run around the school collecting food, after the timer en
 - Player 1 uses WASD
 - Player 2 uses arrow keys
 
-
 ###### Features
 - 2 Player Splitscreen
 - Play Again Function
 - Mini Tutorial / Start Screen
 
-### Requirements
-- Python 3.6 or above
-- Pygame 1.9.6 or above
+### Running the Game
+###### Run source code
+1. Install Python 3.7.5 or newer
+2. Install Pygame 1.9.6 or newer
+3. Download & extract the source
+4. Run `game.py`
+
+###### Windows executable
+1. Download the .exe from the latest [release](https://github.com/bly852/food-wars/releases)
+2. Run the exe
+    - If windows stops you, just click `more info` then `run anyways`
+    - If you don't trust an exe just run the source code yourself
+
+###### MacOS.app
+1. Download the .app.zip from the latest [release](https://github.com/bly852/food-wars/releases)
+2. Run the .app
+    - May have to open by right clicking the file then clicking `open`
+    - If you don't trust a program just run the source code yourself
 
 ### To-Do's
-- [ ] Minimap
-- [ ] Students that walk around and reduce your score if you bump into them
-- [ ] CPU Mode
-- [ ] Better Menus
-- [ ] Sounds
-- [ ] First floor of the map
-- [x] Pyinstaller Compatibility
+- Minimap
+- Students that walk around and reduce your score if you bump into them
+- CPU Mode
+- Better Menus
+- Sounds
+- First floor of the map
+
+
+##### [Changelog](CHANGELOG.md)
