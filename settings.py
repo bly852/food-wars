@@ -63,4 +63,4 @@ food_spawn_timer = 0.1  # seconds between food spawn
 
 # text settings
 default_font = 'Segoe UI.ttf'
-default_font_bold = 'Segoe_UI_Bold.ttf'
+default_font_bold = 'Segoe UI Bold.ttf'

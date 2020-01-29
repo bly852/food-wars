@@ -47,6 +47,7 @@ class Game:
 
         # creates a clock to track FPS
         self.fpsClock = pygame.time.Clock()
+        self.dt = self.fpsClock.tick(fps) / 1000
 
         # loads game assets
         self.data_loader()
@@ -245,6 +246,7 @@ class Game:
         """
         # creates a new game instance and fills the background with it
         self.new()
+        self.all_sprites.update()
         self.camera1.update(self.player1)
         self.camera2.update(self.player2)
         self.player1_cam.fill(lightgrey)
@@ -338,6 +340,7 @@ class Game:
             self.update()
         while counting:
             if self.splashscreen == True:
+                self.all_sprites.update()
                 self.camera1.update(self.player1)
                 self.camera2.update(self.player2)
                 self.player1_cam.fill(lightgrey)
