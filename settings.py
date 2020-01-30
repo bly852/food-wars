@@ -24,7 +24,7 @@ lightgrey = (100, 100, 100)
 width, height = 1280, 720
 fps = 120  # fps limit
 title = 'Food Wars'
-time_limit = 15  # game time limit in seconds
+time_limit = 60  # game time limit in seconds
 gui_accent_colour = green
 
 
