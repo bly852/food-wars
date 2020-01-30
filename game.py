@@ -177,10 +177,6 @@ class Game:
         part of the game loop - draws the new sprite positions and text to the
         screen
         """
-        # updates window caption with current FPS
-        pygame.display.set_caption(
-            "{} | FPS: {:.0f}".format(title, self.fpsClock.get_fps()))
-
         # wipes both cameras and fills with light grey
         self.player1_cam.fill(lightgrey)
         self.player2_cam.fill(lightgrey)
@@ -206,12 +202,29 @@ class Game:
         pygame.draw.line(self.screen, black, (self.screen_width / 2, 2), (self.screen_width / 2, self.screen_height), 10)
         pygame.draw.rect(self.screen, black, ((self.screen_width / 4) - (self.screen_width / 12), 2, self.screen_width - (self.screen_width / 4) - (self.screen_width / 12), 33))
 
-        # draws time left to the screen
-        self.draw_text('{} seconds left'.format(time_limit - (int(self.elapsed_time))), self.default_font_bold, 25, white, self.screen_width / 2, 17, align='center')
+        if self.splashscreen == False:
+            # updates window caption with current FPS
+            pygame.display.set_caption(
+                "{} | FPS: {:.0f}".format(title, self.fpsClock.get_fps()))
 
-        # draws player score to the screen
-        self.draw_text('Score: {}'.format(self.player1.score), self.default_font_bold, 25, white, self.screen_width / 4, 17, align='center')
-        self.draw_text('Score: {}'.format(self.player2.score), self.default_font_bold, 25, white, self.screen_width - (self.screen_width / 4), 17, align='center')
+            # draws time left to the screen
+            time_left = round((time_limit - self.elapsed_time), 2)
+            # draws Times up when the timer is finished
+            if time_left <= 0:
+                self.draw_text("Time's Up!", self.default_font_bold, 25, red, self.screen_width / 2, 17, align='center')
+            # draws the timer in red when it is under 10
+            elif time_left < 10:
+                # adds a 0 to the end of the time when less than 3 digits (e.g. 1.3)
+                if len(str(time_left)) == 3:
+                    time_left = str(time_left) + '0'
+                self.draw_text('{} seconds left'.format(time_left), self.default_font_bold, 25, red, self.screen_width / 2, 17, align='center')
+            # draws the timer to the nearest tenth decimal
+            else:
+                self.draw_text('{} seconds left'.format(round(time_left, 1)), self.default_font_bold, 25, white, self.screen_width / 2, 17, align='center')
+
+            # draws player score to the screen
+            self.draw_text('Score: {}'.format(self.player1.score), self.default_font_bold, 25, white, self.screen_width / 4, 17, align='center')
+            self.draw_text('Score: {}'.format(self.player2.score), self.default_font_bold, 25, white, self.screen_width - (self.screen_width / 4), 17, align='center')
 
     def events(self):
         """
@@ -244,23 +257,11 @@ class Game:
         """
         shows the games start screen
         """
+        # tells the game rest of the game that it is at splashscreen
+        self.splashscreen = True
         # creates a new game instance and fills the background with it
         self.new()
-        self.all_sprites.update()
-        self.camera1.update(self.player1)
-        self.camera2.update(self.player2)
-        self.player1_cam.fill(lightgrey)
-        self.player2_cam.fill(lightgrey)
-        for sprite in self.all_sprites:
-            self.player1_cam.blit(sprite.image, self.camera1.apply(sprite))
-        for sprite in self.all_sprites:
-            self.player2_cam.blit(sprite.image, self.camera2.apply(sprite))
-        self.screen.blit(self.player1_cam, (0, 0))
-        self.screen.blit(self.player2_cam, (self.screen_width / 2, 0))
-        pygame.draw.line(self.screen, gui_accent_colour, (self.screen_width / 2, 0), (self.screen_width / 2, self.screen_height), 14)
-        pygame.draw.rect(self.screen, gui_accent_colour, ((self.screen_width / 4) - (self.screen_width / 12) - 2, 0, self.screen_width - (self.screen_width / 4) - (self.screen_width / 12) + 4, 37))
-        pygame.draw.line(self.screen, black, (self.screen_width / 2, 2), (self.screen_width / 2, self.screen_height), 10)
-        pygame.draw.rect(self.screen, black, ((self.screen_width / 4) - (self.screen_width / 12), 2, self.screen_width - (self.screen_width / 4) - (self.screen_width / 12), 33))
+        self.draw()
 
         # covers the screen in a transparent grey layer
         self.screen.blit(self.game_over, (0, 0))
@@ -268,7 +269,7 @@ class Game:
 
         # draws splash screen buttons
 
-        self.splashscreen = True
+
 
         # flips final screen to display
         pygame.display.flip()
@@ -336,31 +337,9 @@ class Game:
     def countdown(self):
         start_time = time.time()
         counting = True
-        if not self.splashscreen:
-            self.update()
+        self.update()
         while counting:
-            if self.splashscreen == True:
-                self.all_sprites.update()
-                self.camera1.update(self.player1)
-                self.camera2.update(self.player2)
-                self.player1_cam.fill(lightgrey)
-                self.player2_cam.fill(lightgrey)
-                for sprite in self.all_sprites:
-                    self.player1_cam.blit(sprite.image, self.camera1.apply(sprite))
-                for sprite in self.all_sprites:
-                    self.player2_cam.blit(sprite.image, self.camera2.apply(sprite))
-                self.screen.blit(self.player1_cam, (0, 0))
-                self.screen.blit(self.player2_cam, (self.screen_width / 2, 0))
-                pygame.draw.line(self.screen, gui_accent_colour, (self.screen_width / 2, 0), (self.screen_width / 2, self.screen_height), 14)
-                pygame.draw.rect(self.screen, gui_accent_colour, ((self.screen_width / 4) - (self.screen_width / 12) - 2, 0, self.screen_width - (self.screen_width / 4) - (self.screen_width / 12) + 4, 37))
-                pygame.draw.line(self.screen, black, (self.screen_width / 2, 2), (self.screen_width / 2, self.screen_height), 10)
-                pygame.draw.rect(self.screen, black, ((self.screen_width / 4) - (self.screen_width / 12), 2, self.screen_width - (self.screen_width / 4) - (self.screen_width / 12), 33))
-                self.draw_text('{} seconds left'.format(time_limit), self.default_font_bold, 25, white, self.screen_width / 2, 17, align='center')
-                self.draw_text('Score: {}'.format(self.player1.score), self.default_font_bold, 25, white, self.screen_width / 4, 17, align='center')
-                self.draw_text('Score: {}'.format(self.player2.score), self.default_font_bold, 25, white, self.screen_width - (self.screen_width / 4), 17, align='center')
-            else:
-                self.draw()
-
+            self.draw()
             self.screen.blit(self.game_over, (0, 0))
 
             if time.time() - start_time <= 1:
@@ -386,7 +365,6 @@ class Game:
 
             elif time.time() - start_time >=3:
                 counting = False
-            self.fpsClock.tick(fps)
             pygame.display.flip()
 
 

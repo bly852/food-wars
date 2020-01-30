@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - README update
 - Countdown timer before the game starts
 
+### Changed
+- Count down timer is now 3 digits long and turns red when under 10 seconds
+    - Displays 'Times Up' in red after timer is finished
+
 ### Fixed
 - Xbox controller connected via the USB Dongle didn't work properly in single controller mode
 - MacOS.App plist Versioning
