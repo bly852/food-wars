@@ -266,7 +266,6 @@ class Game:
         # covers the screen in a transparent grey layer
         self.screen.blit(self.game_over, (0, 0))
 
-
         # draws splash screen buttons
 
 
@@ -291,8 +290,10 @@ class Game:
             self.draw_text('Player 1 Wins!', self.default_font_bold, 50, white, self.screen_width // 2, self.screen_height // 2 + 75, align='center')
         elif self.player1.score < self.player2.score:
             self.draw_text('Player 2 Wins!', self.default_font_bold, 50, white, self.screen_width // 2, self.screen_height // 2 + 75, align='center')
-        else:
+        elif self.player1.score == self.player2.score:
             self.draw_text('It was a tie!', self.default_font_bold, 50, white, self.screen_width // 2, self.screen_height // 2 + 75, align='center')
+        else:
+            self.draw_text('Did you even try?', self.default_font_bold, 50, white, self.screen_width // 2, self.screen_height // 2 + 75, align='center')
         self.draw_text('Press Escape to quit the game', self.default_font_bold, 25, white, self.screen_width // 2, self.screen_height // 2 + 150, align='center')
         self.draw_text('Press any other key to play again', self.default_font_bold, 25, white, self.screen_width // 2, self.screen_height // 2 + 175, align='center')
 
