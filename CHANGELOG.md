@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Link to changelog from the README
 - README update
 - Countdown timer before the game starts
+- Menu Buttons
 
 ### Changed
 - Count down timer is now 3 digits long and turns red when under 10 seconds

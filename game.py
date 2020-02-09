@@ -271,38 +271,53 @@ class Game:
         self.click = False
         while waiting:
             for event in pygame.event.get():
+                if event.type == QUIT:
+                    self.quit()
+                # checks for mouse click
                 if event.type == MOUSEBUTTONDOWN:
                     if event.button == 1:
                         self.click = True
                 else:
                     self.click = False
 
+            # gets current mouse position
             mx, my = pygame.mouse.get_pos()
 
-            # draws splash screen buttons
+            # sets splash screen buttons
             play_button = pygame.Rect(self.screen_width/2 - self.screen_width/16, self.screen_height/2 - 150, self.screen_width/8, self.screen_height/16)
             quit_button = pygame.Rect(self.screen_width/2 - self.screen_width/16, self.screen_height/2 + 150, self.screen_width/8, self.screen_height/16)
+
+            # checks for mouse collision with the play button
             if play_button.collidepoint((mx, my)):
+                # ends loop when clicked
                 if self.click:
                     waiting = False
+                # draws different button when hovering
                 else:
                     pygame.draw.rect(self.screen, black, play_button)
                     self.draw_text("Play", self.default_font_bold, 40, white, self.screen_width/2, self.screen_height/2 - 135, align="center")
+            # draws regular button
             else:
                 pygame.draw.rect(self.screen, white, play_button)
                 self.draw_text("Play", self.default_font_bold, 40, black, self.screen_width/2, self.screen_height/2 - 135, align="center")
+
+            # checks for mouse collision with the quit button
             if quit_button.collidepoint((mx, my)):
+                # quits the game when clicked
                 if self.click:
                     self.quit()
+                # draws different button when hovering
                 else:
                     pygame.draw.rect(self.screen, black, quit_button)
                     self.draw_text("Quit", self.default_font_bold, 40, white, self.screen_width/2, self.screen_height/2 + 170, align="center")
+
+            # draws regular button
             else:
                 pygame.draw.rect(self.screen, white, quit_button)
                 self.draw_text("Quit", self.default_font_bold, 40, black, self.screen_width/2, self.screen_height/2 + 170, align="center")
 
             self.fpsClock.tick(fps)
-            pygame.display.flip()
+            pygame.display.flip() # flips drawn buttons to the screen
 
     def show_game_over(self):
         """
@@ -325,7 +340,6 @@ class Game:
         else:
             self.draw_text('Did you even try?', self.default_font_bold, 50, white, self.screen_width // 2, self.screen_height // 2 + 75, align='center')
 
-
         waiting = True
         main_menu = False
         self.click = False
@@ -333,45 +347,54 @@ class Game:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     self.quit()
+                # checks for mouse click
                 if event.type == MOUSEBUTTONDOWN:
                     if event.button == 1:
                         self.click = True
                 else:
                     self.click = False
 
+            # gets mouse position
             mx, my = pygame.mouse.get_pos()
 
-            # draws splash screen buttons
+            # sets the on screen buttons
             play_button = pygame.Rect(self.screen_width/2 - self.screen_width/16, self.screen_height/2 + 140, self.screen_width/8, self.screen_height/24)
             main_menu_button = pygame.Rect(self.screen_width/2 - self.screen_width/16, self.screen_height/2 + 170, self.screen_width/8, self.screen_height/24)
 
+            # checks for mouse collision with the play again button
             if play_button.collidepoint((mx, my)):
+                # exits the loop again when click
                 if self.click:
                     waiting = False
+                # draws different button on hover
                 else:
                     pygame.draw.rect(self.screen, black, play_button)
                     self.draw_text('Play Again', self.default_font_bold, 25, white, self.screen_width // 2, self.screen_height // 2 + 150, align='center')
+
+            # draws play again button
             else:
                 pygame.draw.rect(self.screen, white, play_button)
                 self.draw_text('Play Again', self.default_font_bold, 25, black, self.screen_width // 2, self.screen_height // 2 + 150, align='center')
 
+            # checks for mouse collision with the main menu button
             if main_menu_button.collidepoint((mx, my)):
+                # tells the game to return to the main menu and exits loop
                 if self.click:
                     main_menu = True
                     waiting = False
+                # draws different button on hover
                 else:
                     pygame.draw.rect(self.screen, black, main_menu_button)
                     self.draw_text('Main Menu', self.default_font_bold, 25, white, self.screen_width // 2, self.screen_height // 2 + 180, align='center')
+            # draws main menu button
             else:
                 pygame.draw.rect(self.screen, white, main_menu_button)
                 self.draw_text('Main Menu', self.default_font_bold, 25, black, self.screen_width // 2, self.screen_height // 2 + 180, align='center')
 
-
-
-
             self.fpsClock.tick(fps)
-            pygame.display.flip()
+            pygame.display.flip() # flips drawn buttons to the screen
 
+        # returns game to the main menu
         if main_menu:
             self.show_start_screen()
 
