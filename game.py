@@ -259,6 +259,7 @@ class Game:
         """
         # tells the game rest of the game that it is at splashscreen
         self.splashscreen = True
+
         # creates a new game instance and fills the background with it
         self.new()
         self.draw()
@@ -266,13 +267,42 @@ class Game:
         # covers the screen in a transparent grey layer
         self.screen.blit(self.game_over, (0, 0))
 
-        # draws splash screen buttons
+        waiting = True
+        self.click = False
+        while waiting:
+            for event in pygame.event.get():
+                if event.type == MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        self.click = True
+                else:
+                    self.click = False
 
+            mx, my = pygame.mouse.get_pos()
 
+            # draws splash screen buttons
+            play_button = pygame.Rect(self.screen_width/2 - self.screen_width/16, self.screen_height/2 - 150, self.screen_width/8, self.screen_height/16)
+            quit_button = pygame.Rect(self.screen_width/2 - self.screen_width/16, self.screen_height/2 + 150, self.screen_width/8, self.screen_height/16)
+            if play_button.collidepoint((mx, my)):
+                if self.click:
+                    waiting = False
+                else:
+                    pygame.draw.rect(self.screen, black, play_button)
+                    self.draw_text("Play", self.default_font_bold, 40, white, self.screen_width/2, self.screen_height/2 - 135, align="center")
+            else:
+                pygame.draw.rect(self.screen, white, play_button)
+                self.draw_text("Play", self.default_font_bold, 40, black, self.screen_width/2, self.screen_height/2 - 135, align="center")
+            if quit_button.collidepoint((mx, my)):
+                if self.click:
+                    self.quit()
+                else:
+                    pygame.draw.rect(self.screen, black, quit_button)
+                    self.draw_text("Quit", self.default_font_bold, 40, white, self.screen_width/2, self.screen_height/2 + 170, align="center")
+            else:
+                pygame.draw.rect(self.screen, white, quit_button)
+                self.draw_text("Quit", self.default_font_bold, 40, black, self.screen_width/2, self.screen_height/2 + 170, align="center")
 
-        # flips final screen to display
-        pygame.display.flip()
-        self.wait_for_key()
+            self.fpsClock.tick(fps)
+            pygame.display.flip()
 
     def show_game_over(self):
         """
@@ -294,46 +324,56 @@ class Game:
             self.draw_text('It was a tie!', self.default_font_bold, 50, white, self.screen_width // 2, self.screen_height // 2 + 75, align='center')
         else:
             self.draw_text('Did you even try?', self.default_font_bold, 50, white, self.screen_width // 2, self.screen_height // 2 + 75, align='center')
-        self.draw_text('Press Escape to quit the game', self.default_font_bold, 25, white, self.screen_width // 2, self.screen_height // 2 + 150, align='center')
-        self.draw_text('Press any other key to play again', self.default_font_bold, 25, white, self.screen_width // 2, self.screen_height // 2 + 175, align='center')
 
-        pygame.display.flip() # flips final screen to the display
-        self.wait_for_key() # runs the loop
 
-    def wait_for_key(self):
-        """
-        game loop that waits at the game over screen
-        """
-        start_time = time.time()
-        pygame.event.clear()
         waiting = True
+        main_menu = False
+        self.click = False
         while waiting:
-            self.fpsClock.tick(fps)
             for event in pygame.event.get():
                 if event.type == QUIT:
-                    waiting = False
                     self.quit()
-                # timer to prevent accidental instant replay
-                if time.time() - start_time >= 1:
-                    # if escape is pressed quit the game, otherwise start a new game
-                    if event.type == KEYDOWN:
-                        if self.splashscreen == True:
-                            waiting = False
-                        else:
-                            if event.key == K_ESCAPE:
-                                self.quit()
-                            elif event.key == K_r:
-                                if self.screen_width == 1280 and self.screen_height == 720:
-                                    self.screen_width = 800
-                                    self.screen_height = 600
-                                    self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
-                                elif self.screen_width == 800 and self.screen_height == 600:
-                                    self.screen_width = 1280
-                                    self.screen_height = 720
-                                    self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
-                                self.show_game_over()
-                            else:
-                                waiting = False
+                if event.type == MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        self.click = True
+                else:
+                    self.click = False
+
+            mx, my = pygame.mouse.get_pos()
+
+            # draws splash screen buttons
+            play_button = pygame.Rect(self.screen_width/2 - self.screen_width/16, self.screen_height/2 + 140, self.screen_width/8, self.screen_height/24)
+            main_menu_button = pygame.Rect(self.screen_width/2 - self.screen_width/16, self.screen_height/2 + 170, self.screen_width/8, self.screen_height/24)
+
+            if play_button.collidepoint((mx, my)):
+                if self.click:
+                    waiting = False
+                else:
+                    pygame.draw.rect(self.screen, black, play_button)
+                    self.draw_text('Play Again', self.default_font_bold, 25, white, self.screen_width // 2, self.screen_height // 2 + 150, align='center')
+            else:
+                pygame.draw.rect(self.screen, white, play_button)
+                self.draw_text('Play Again', self.default_font_bold, 25, black, self.screen_width // 2, self.screen_height // 2 + 150, align='center')
+
+            if main_menu_button.collidepoint((mx, my)):
+                if self.click:
+                    main_menu = True
+                    waiting = False
+                else:
+                    pygame.draw.rect(self.screen, black, main_menu_button)
+                    self.draw_text('Main Menu', self.default_font_bold, 25, white, self.screen_width // 2, self.screen_height // 2 + 180, align='center')
+            else:
+                pygame.draw.rect(self.screen, white, main_menu_button)
+                self.draw_text('Main Menu', self.default_font_bold, 25, black, self.screen_width // 2, self.screen_height // 2 + 180, align='center')
+
+
+
+
+            self.fpsClock.tick(fps)
+            pygame.display.flip()
+
+        if main_menu:
+            self.show_start_screen()
 
     def countdown(self):
         start_time = time.time()
@@ -342,6 +382,10 @@ class Game:
         while counting:
             self.draw()
             self.screen.blit(self.game_over, (0, 0))
+
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    self.quit()
 
             if time.time() - start_time <= 1:
                 # player 1 countdown
