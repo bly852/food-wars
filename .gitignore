@@ -3,3 +3,5 @@
 build/
 .DS_Store
 .idea/*.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/food-wars.iml
